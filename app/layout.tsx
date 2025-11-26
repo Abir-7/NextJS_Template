@@ -5,6 +5,9 @@ import { ThemeProvider } from "@/providers/next_theme";
 import { ReactQueryProvider } from "@/providers/query_client_provider";
 import { Toaster } from "@/components/ui/sonner";
 
+import ReduxProvider from "@/providers/redux-provider";
+import AuthCheck from "@/providers/auth_provider";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -36,7 +39,12 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <ReactQueryProvider> {children}</ReactQueryProvider>
+          <ReduxProvider>
+            {" "}
+            <AuthCheck>
+              <ReactQueryProvider> {children}</ReactQueryProvider>
+            </AuthCheck>
+          </ReduxProvider>
         </ThemeProvider>
         <Toaster></Toaster>
       </body>

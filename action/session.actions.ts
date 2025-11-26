@@ -10,7 +10,9 @@ export async function getCurrentUser() {
 
   const email = atob(token).split("-fake-jwt")[0];
 
-  return { email, name: "Demo User" };
+  return {
+    user: { id: email, email: email },
+  };
 }
 
 export async function createSession(token: string) {
