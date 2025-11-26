@@ -11,7 +11,7 @@ export async function getCurrentUser() {
   const email = atob(token).split("-fake-jwt")[0];
 
   return {
-    user: { id: email, email: email },
+    user: { id: email, email: email, role: "admin" },
   };
 }
 
