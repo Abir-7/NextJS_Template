@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+
 import { useRouter } from "next/navigation";
-import { RootState } from "@/lib/redux/store";
+
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hook";
+import { setIsLoading } from "@/lib/redux/features/authSlice/auth_slice";
 
 interface RoleGuardProps {
   allowedRoles: string[];
@@ -12,8 +14,9 @@ interface RoleGuardProps {
 
 export default function RoleGuard({ allowedRoles, children }: RoleGuardProps) {
   const router = useRouter();
-  const user = useSelector((state: RootState) => state.auth.user);
-  const [loading, setLoading] = useState(true);
+  const dispatch = useAppDispatch();
+
+  const { is_loading, user } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
     if (!user || !allowedRoles.includes(user.role)) {
@@ -21,10 +24,10 @@ export default function RoleGuard({ allowedRoles, children }: RoleGuardProps) {
       return;
     }
 
-    Promise.resolve().then(() => setLoading(false));
-  }, [user, allowedRoles, router]);
+    Promise.resolve().then(() => dispatch(setIsLoading(false)));
+  }, [user, allowedRoles, router, dispatch]);
 
-  if (loading) return null;
+  if (is_loading) return null;
 
   return <>{children}</>;
 }

@@ -2,10 +2,12 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type AuthState = {
   user: null | { id: string; email: string; role: string };
+  is_loading: boolean;
 };
 
 const initialState: AuthState = {
   user: null,
+  is_loading: true,
 };
 
 export const authSlice = createSlice({
@@ -18,8 +20,11 @@ export const authSlice = createSlice({
     clearAuth(state) {
       state.user = null;
     },
+    setIsLoading(state, action: PayloadAction<AuthState["is_loading"]>) {
+      state.is_loading = action.payload;
+    },
   },
 });
 
-export const { setAuth, clearAuth } = authSlice.actions;
+export const { setAuth, clearAuth, setIsLoading } = authSlice.actions;
 export default authSlice.reducer;

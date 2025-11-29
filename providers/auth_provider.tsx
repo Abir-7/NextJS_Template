@@ -1,15 +1,21 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { getCurrentUser } from "@/action/session.actions";
-import { clearAuth, setAuth } from "@/lib/redux/features/authSlice/auth_slice";
+import {
+  clearAuth,
+  setAuth,
+  setIsLoading,
+} from "@/lib/redux/features/authSlice/auth_slice";
+import { useAppSelector } from "@/lib/redux/hook";
 
 export default function AuthCheck({ children }: { children: React.ReactNode }) {
   const dispatch = useDispatch();
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
+
+  const { is_loading } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
     let ignore = false;
@@ -20,7 +26,7 @@ export default function AuthCheck({ children }: { children: React.ReactNode }) {
 
         if (!auth) {
           dispatch(clearAuth());
-          router.replace("/login");
+          //   router.replace("/login");
           return;
         }
 
@@ -30,7 +36,7 @@ export default function AuthCheck({ children }: { children: React.ReactNode }) {
         dispatch(clearAuth());
         router.replace("/login");
       } finally {
-        if (!ignore) setLoading(false);
+        if (!ignore) dispatch(setIsLoading(false));
       }
     }
 
@@ -41,7 +47,7 @@ export default function AuthCheck({ children }: { children: React.ReactNode }) {
     };
   }, [dispatch, router]);
 
-  if (loading) return null;
+  if (is_loading) return null;
 
   return <>{children}</>;
 }

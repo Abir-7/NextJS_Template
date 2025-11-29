@@ -25,3 +25,15 @@ export async function createSession(token: string) {
     maxAge: 60 * 60 * 24,
   });
 }
+
+export async function logout() {
+  const cookieStore = await cookies();
+
+  cookieStore.set({
+    name: "token",
+    value: "",
+    httpOnly: true,
+    path: "/",
+    maxAge: 0, // instantly expires
+  });
+}
