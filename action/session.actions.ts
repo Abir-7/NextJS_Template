@@ -11,7 +11,7 @@ export async function getCurrentUser() {
   const email = atob(token).split("-fake-jwt")[0];
 
   return {
-    user: { id: email, email: email, role: "admin" },
+    user: { id: email, email: email, role: "admin", token },
   };
 }
 
@@ -34,6 +34,6 @@ export async function logout() {
     value: "",
     httpOnly: true,
     path: "/",
-    maxAge: 0, // instantly expires
+    maxAge: 0,
   });
 }

@@ -1,16 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
+import { getCurrentUser } from "@/action/session.actions";
 import { RHFForm } from "@/components/custom/form/RHFForm";
 import { RHFInput } from "@/components/custom/form/RHFInput";
 import { Button } from "@/components/ui/button";
 import { useLogin } from "@/hooks/react_query/use_auth.hook";
 import { useZodForm } from "@/hooks/zod/use-zod-form";
+import { setAuth } from "@/lib/redux/features/authSlice/auth_slice";
+import { useAppDispatch } from "@/lib/redux/hook";
 import { LoginInput, LoginSchema } from "@/schema/login.schema";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 
 export default function LoginPage() {
+  const searchParams = useSearchParams();
+  const callback = searchParams.get("callback") || "/";
+  const dispatch = useAppDispatch();
   const router = useRouter();
   const login = useLogin();
   const form = useZodForm({
@@ -26,7 +32,11 @@ export default function LoginPage() {
       const res = await login.mutateAsync(data);
       if (res.success) {
         toast.success("Login Successful.");
-        router.push("/");
+        const auth = await getCurrentUser();
+        if (auth) {
+          dispatch(setAuth(auth?.user));
+        }
+        router.push(callback);
       }
     } catch (err: any) {
       toast.error(err.message || "Login failed");

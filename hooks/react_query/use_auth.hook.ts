@@ -15,6 +15,6 @@ export function useSignup() {
 
 export function useLogin() {
   return useMutation({
-    mutationFn: async (data: LoginInput) => loginUser(data),
+    mutationFn: async (data: LoginInput) => await loginUser(data),
   });
 }
