@@ -22,6 +22,9 @@ const Navbar = () => {
       <div>Logo</div>
 
       <div className="flex items-center gap-4">
+        <Link href="/" className={isActive("/") ? activeClass : inactiveClass}>
+          Home
+        </Link>
         <Link
           href="/product"
           className={isActive("/product") ? activeClass : inactiveClass}
