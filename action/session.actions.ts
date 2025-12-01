@@ -1,6 +1,7 @@
 // app/actions/sessionActions.ts
 "use server";
 
+import { Role } from "@/lib/redux/features/authSlice/auth_slice";
 import { cookies } from "next/headers";
 
 export async function getCurrentUser() {
@@ -9,9 +10,9 @@ export async function getCurrentUser() {
   if (!token) return null;
 
   const email = atob(token).split("-fake-jwt")[0];
-
+  const role: Role = "admin";
   return {
-    user: { id: email, email: email, role: "admin", token },
+    user: { id: email, email: email, role, token },
   };
 }
 

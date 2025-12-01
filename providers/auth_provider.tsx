@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useEffect } from "react";
@@ -15,9 +16,15 @@ export default function AuthCheck({ children }: { children: React.ReactNode }) {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const { is_loading } = useAppSelector((state) => state.auth);
+  const { user, is_loading } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
+    if (user) {
+      console.log("object");
+      dispatch(setIsLoading(false));
+      return;
+    }
+
     let ignore = false;
 
     async function verify() {
@@ -26,13 +33,12 @@ export default function AuthCheck({ children }: { children: React.ReactNode }) {
 
         if (!auth) {
           dispatch(clearAuth());
-          //   router.replace("/login");
+          router.replace("/login");
           return;
         }
 
         dispatch(setAuth(auth.user));
       } catch (err) {
-        console.error("AUTH ERROR:", err);
         dispatch(clearAuth());
         router.replace("/login");
       } finally {
@@ -45,8 +51,9 @@ export default function AuthCheck({ children }: { children: React.ReactNode }) {
     return () => {
       ignore = true;
     };
-  }, [dispatch, router]);
+  }, [user, dispatch, router]);
 
+  // Hide content until auth is resolved → prevents flash
   if (is_loading) return null;
 
   return <>{children}</>;

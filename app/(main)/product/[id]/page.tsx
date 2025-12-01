@@ -4,7 +4,7 @@ interface Props {
 const page = async ({ params }: Props) => {
   const { id } = await params;
 
-  return <div>Product ID: {id}</div>;
+  return <div className="p-2">Product details: {id}</div>;
 };
 
 export default page;

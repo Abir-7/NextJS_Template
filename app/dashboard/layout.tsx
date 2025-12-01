@@ -1,7 +1,14 @@
-import React, { ReactNode } from "react";
+import { AppSidebar } from "@/components/custom/sidebar/add-sidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
-const layout = ({ children }: { children: ReactNode }) => {
-  return <div>{children}</div>;
-};
-
-export default layout;
+export default function Layout({ children }: { children: React.ReactNode }) {
+  return (
+    <SidebarProvider>
+      <AppSidebar />
+      <main>
+        <SidebarTrigger />
+        {children}
+      </main>
+    </SidebarProvider>
+  );
+}
