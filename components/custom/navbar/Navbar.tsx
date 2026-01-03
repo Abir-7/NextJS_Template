@@ -12,7 +12,7 @@ const Navbar = () => {
 
   // Reusable active class
   const activeClass = "bg-accent text-accent-foreground px-2 py-0.5 rounded";
-  const inactiveClass = "text-muted-foreground";
+  const inactiveClass = "text-muted-foreground px-2 py-0.5";
 
   const isActive = (path: string) =>
     path === "/" ? pathname === "/" : pathname.startsWith(path);
@@ -21,7 +21,7 @@ const Navbar = () => {
     <div className="w-full h-full flex justify-between items-center p-2">
       <div>Logo</div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center  gap-2">
         <Link href="/" className={isActive("/") ? activeClass : inactiveClass}>
           Home
         </Link>
