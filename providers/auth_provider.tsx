@@ -20,7 +20,6 @@ export default function AuthCheck({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (user) {
-      console.log("object");
       dispatch(setIsLoading(false));
       return;
     }
@@ -33,7 +32,7 @@ export default function AuthCheck({ children }: { children: React.ReactNode }) {
 
         if (!auth) {
           dispatch(clearAuth());
-          router.replace("/login");
+          // router.replace("/login");
           return;
         }
 

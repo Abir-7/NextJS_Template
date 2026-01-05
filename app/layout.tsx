@@ -40,7 +40,6 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ReduxProvider>
-            {" "}
             <AuthCheck>
               <ReactQueryProvider> {children}</ReactQueryProvider>
             </AuthCheck>

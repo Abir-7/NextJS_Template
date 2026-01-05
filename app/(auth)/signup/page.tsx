@@ -18,7 +18,7 @@ export default function SignupPage() {
       name: "Abir",
       email: "dev.abir.07@gmail.com",
       password: "123456",
-      confirmPassword: "123456",
+      confirm_password: "123456",
     },
   });
 
@@ -64,7 +64,7 @@ export default function SignupPage() {
 
           <RHFInput
             control={form.control}
-            name="confirmPassword"
+            name="confirm_password"
             label="Confirm Password"
             type="password"
             placeholder="Confirm your password"
