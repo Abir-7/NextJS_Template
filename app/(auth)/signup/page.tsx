@@ -5,22 +5,12 @@ import { RHFForm } from "@/components/custom/form/RHFForm";
 import { RHFInput } from "@/components/custom/form/RHFInput";
 import { Button } from "@/components/ui/button";
 import { useSignup } from "@/hooks/react_query/use_auth.hook";
-import { useZodForm } from "@/hooks/zod/use-zod-form";
+
 import { SignupSchema, SignupInput } from "@/schema/signup.schema";
 import { toast } from "sonner";
 
 export default function SignupPage() {
   const signup = useSignup();
-
-  const form = useZodForm({
-    schema: SignupSchema,
-    defaultValues: {
-      name: "Abir",
-      email: "dev.abir.07@gmail.com",
-      password: "123456",
-      confirm_password: "123456",
-    },
-  });
 
   const handleSignup = async (data: SignupInput) => {
     try {
@@ -38,16 +28,24 @@ export default function SignupPage() {
       <div className="w-full max-w-md p-6 rounded-xl shadow-md">
         <h1 className="text-2xl font-semibold text-center mb-6">Sign Up</h1>
 
-        <RHFForm form={form} onSubmit={handleSignup} className="space-y-4">
+        <RHFForm
+          schema={SignupSchema}
+          onSubmit={handleSignup}
+          defaultValues={{
+            name: "",
+            email: "",
+            password: "",
+            confirm_password: "",
+          }}
+          className="space-y-4"
+        >
           <RHFInput
-            control={form.control}
             name="name"
             label="Full Name"
             placeholder="Enter your name"
           />
 
           <RHFInput
-            control={form.control}
             name="email"
             label="Email"
             type="email"
@@ -55,7 +53,6 @@ export default function SignupPage() {
           />
 
           <RHFInput
-            control={form.control}
             name="password"
             label="Password"
             type="password"
@@ -63,7 +60,6 @@ export default function SignupPage() {
           />
 
           <RHFInput
-            control={form.control}
             name="confirm_password"
             label="Confirm Password"
             type="password"

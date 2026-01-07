@@ -1,25 +1,35 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { Form } from "@/components/ui/form";
-import { ReactNode } from "react";
-import { UseFormReturn, SubmitHandler, FieldValues } from "react-hook-form";
-import { cn } from "@/lib/utils";
+import { useForm, type DefaultValues, type FieldValues } from "react-hook-form";
 
+import { cn } from "@/lib/utils";
+import type { ReactNode } from "react";
+import type { ZodType } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 interface RHFFormProps<T extends FieldValues> {
-  form: UseFormReturn<T>;
   children: ReactNode;
   onSubmit: (data: T) => void | Promise<void>;
+  defaultValues?: Partial<T>;
   className?: string;
+  schema?: ZodType<T, any, any>; // optional Zod schema for validation
 }
 
 export function RHFForm<T extends FieldValues>({
-  form,
   children,
   className,
   onSubmit,
+  defaultValues,
+  schema,
   ...props
 }: RHFFormProps<T>) {
-  const handleSubmit: SubmitHandler<T> = async (data) => {
+  const form = useForm<T>({
+    defaultValues: defaultValues as DefaultValues<T>,
+    resolver: schema ? zodResolver(schema as any) : undefined,
+  });
+
+  const handleSubmit = async (data: T) => {
     try {
       await onSubmit(data);
     } catch (err) {

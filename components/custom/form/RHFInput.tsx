@@ -1,7 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-"use client";
-
-import { useState } from "react";
+import { useFormContext, type FieldValues, type Path } from "react-hook-form";
 import {
   FormField,
   FormItem,
@@ -10,27 +7,21 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Control } from "react-hook-form";
-import { Eye, EyeOff } from "lucide-react";
 
-interface RHFInputProps {
-  control: Control<any>;
-  name: string;
-  label: string;
+interface TextFieldProps<T extends FieldValues> {
+  name: Path<T>;
+  label?: string;
   placeholder?: string;
   type?: "text" | "email" | "password";
 }
 
-export function RHFInput({
-  control,
+export function RHFInput<T extends FieldValues>({
   name,
   label,
   placeholder,
   type = "text",
-}: RHFInputProps) {
-  const [show, setShow] = useState(false);
-
-  const isPassword = type === "password";
+}: TextFieldProps<T>) {
+  const { control } = useFormContext<T>();
 
   return (
     <FormField
@@ -38,28 +29,10 @@ export function RHFInput({
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>{label}</FormLabel>
-
+          {label && <FormLabel>{label}</FormLabel>}
           <FormControl>
-            <div className="relative">
-              <Input
-                {...field}
-                type={isPassword ? (show ? "text" : "password") : type}
-                placeholder={placeholder}
-              />
-
-              {isPassword && (
-                <button
-                  type="button"
-                  onClick={() => setShow(!show)}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 text-sm text-muted-foreground"
-                >
-                  {show ? <EyeOff size={18} /> : <Eye size={18} />}
-                </button>
-              )}
-            </div>
+            <Input {...field} placeholder={placeholder} type={type} />
           </FormControl>
-
           <FormMessage />
         </FormItem>
       )}
