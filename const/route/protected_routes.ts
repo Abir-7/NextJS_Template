@@ -4,7 +4,7 @@ const all_roles = Object.values(user_role);
 
 export const protected_routes = [
   {
-    path: "/product",
+    path: "/product/*",
     allowedRoles: [user_role.admin],
   },
   {
